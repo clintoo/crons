@@ -1,0 +1,39 @@
+name: n8n cron job
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"  # Every 15 minutes
+  workflow_dispatch:  # allow manual run
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check uptime
+        run: |
+          TARGET="https://n8n-4sa1.onrender.commmm"
+          MAX_RETRIES=3
+          RETRY_DELAY=10
+          SUCCESS=false
+
+          echo "🔁 Starting uptime check for: $TARGET"
+
+          for i in $(seq 1 $MAX_RETRIES); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$TARGET")
+            echo "Attempt $i: HTTP $STATUS"
+            if [ "$STATUS" -eq 200 ]; then
+              echo "✅ Instance is up (HTTP 200)"
+              SUCCESS=true
+              break
+            else
+              echo "⚠️ Ping failed, retrying in $RETRY_DELAY seconds..."
+              sleep $RETRY_DELAY
+            fi
+          done
+
+          if [ "$SUCCESS" = false ]; then
+            echo "::error::❌ n8n instance appears down after $MAX_RETRIES attempts"
+            exit 1
+          fi
+
+          echo "🎉 n8n ping completed successfully at $(date)"
