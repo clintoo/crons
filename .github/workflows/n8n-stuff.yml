@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Check uptime
         run: |
-          TARGET="https://n8n-4sa1.onrender.com"
+          TARGET="https://n8n-10k6.onrender.com"
           MAX_RETRIES=5
           RETRY_DELAY=10
           SUCCESS=false
