@@ -2,8 +2,8 @@ name: n8n cron job
 
 on:
   schedule:
-    - cron: "*/5 * * * *"  # Every 5 minutes
-  workflow_dispatch:  # allow manual run
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
 
 jobs:
   ping:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Check uptime
         run: |
-          TARGET="https://n8n-10k6.onrender.com"
+          TARGET="https://n8n-10k6.onrender.com/webhook/39f297aa-fd96-4d52-841a-52733d4ed098"
           MAX_RETRIES=5
           RETRY_DELAY=10
           SUCCESS=false
